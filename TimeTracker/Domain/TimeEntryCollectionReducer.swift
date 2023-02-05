@@ -8,65 +8,89 @@
 import ComposableArchitecture
 import Foundation
 
-public struct TrackingEntityCollection: Equatable {
-    public let id: UUID
-    public var createdAt: Date
-    public var updatedAt: Date
-}
-
 public struct TimeEntryCollectionReducer: ReducerProtocol {
     @Dependency(\.uuid) var uuidGenerator
     @Dependency(\.date) var dateGenerator
 
     public struct State: Equatable {
-        var entries: [UUID: TrackingEntity]
+        public var entries: IdentifiedArrayOf<TimeEntryReducer.State> = []
     }
 
     public enum Action: Equatable {
-        case createNew(description: String?)
-        case insert(entity: TrackingEntity)
+        case createNew(description: String?, status: TrackingEntity.Status)
+        case insert(entry: TimeEntryReducer.State)
         case remove(id: UUID)
+        case startDisplayTimer
+        case updateEntries
         case loadEntries
         case saveEntries
+        case timeTracking(id: TimeEntryReducer.State.ID, action: TimeEntryReducer.Action)
     }
 
-    public func reduce(
-        into state: inout State,
-        action: Action
-    ) -> ComposableArchitecture.EffectTask<Action> {
-        switch action {
-        case let .createNew(description: description):
-            let createdAt = dateGenerator()
-            let newEntityId = uuidGenerator()
-            guard state.entries[newEntityId] == nil
-            else { return .none }
-            let newEntity = TrackingEntity(
-                id: newEntityId,
-                description: .create(description: description),
-                status: .stopped,
-                accumulatedTime: TrackingEntity.AccumulatedTime(),
-                createdAt: createdAt,
-                updatedAt: createdAt
-            )
-            state.entries[newEntityId] = newEntity
-            return .none
+    private enum TimerTickID {}
 
-        case let .insert(entity: entity):
-            guard state.entries[entity.id] == nil
-            else { return .none }
-            state.entries[entity.id] = entity
-            return .none
+    public var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case let .createNew(description: description, status: status):
+                let createdAt = dateGenerator()
+                let newEntityId = uuidGenerator()
+                guard state.entries[id: newEntityId] == nil
+                else { return .none }
+                let newEntity = TrackingEntity(
+                    id: newEntityId,
+                    description: .createWith(description: description),
+                    status: status,
+                    accumulatedTime: TrackingEntity.AccumulatedTime(
+                        total: 0,
+                        accumulatedSession: 0,
+                        startDate: status == .started ? createdAt : nil
+                    ),
+                    createdAt: createdAt,
+                    updatedAt: createdAt
+                )
+                state.entries[id: newEntityId] = TimeEntryReducer.State(entry: newEntity)
+                return .none
 
-        case let .remove(id: id):
-            guard state.entries[id] != nil
-            else { return .none }
-            state.entries[id] = nil
-            return .none
+            case let .insert(entry: entry):
+                guard state.entries[id: entry.id] == nil
+                else { return .none }
+                state.entries[id: entry.id] = entry
+                return .none
 
-        case .loadEntries:
-            fatalError()
-        case .saveEntries:
-            fatalError()
+            case let .remove(id: id):
+                guard state.entries[id: id] != nil
+                else { return .none }
+                state.entries[id: id] = nil
+                return .none
+
+            case .timeTracking(id: _, action: _):
+                return .none
+
+            case .startDisplayTimer:
+                return .run { send in
+                    while true {
+                        try await Task.sleep(nanoseconds: 1 * NSEC_PER_SEC)
+                        await send(.updateEntries)
+                    }
+                }
+                .cancellable(id: TimerTickID.self, cancelInFlight: true)
+
+            case .updateEntries:
+                return .merge(
+                    state.entries.map {
+                        .send(.timeTracking(id: $0.id, action: .updateAccumulatedTime))
+                    }
+                )
+
+            case .loadEntries:
+                fatalError()
+            case .saveEntries:
+                fatalError()
+            }
+        }
+        .forEach(\.entries, action: /Action.timeTracking(id:action:)) {
+            TimeEntryReducer()
         }
     }
 }

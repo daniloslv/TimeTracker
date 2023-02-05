@@ -8,56 +8,16 @@
 import ComposableArchitecture
 import Foundation
 
-public struct TrackingEntity: Equatable {
-    public let id: UUID
-    public var description: Description
-    public var status: Status
-    public var accumulatedTime: AccumulatedTime
-    public var createdAt: Date
-    public var updatedAt: Date
-}
-
-public extension TrackingEntity {
-    enum Description: Equatable {
-        case unnamed
-        case description(String)
-
-        public var value: String? {
-            switch self {
-            case .unnamed: return nil
-            case let .description(text): return text
-            }
-        }
-
-        public static func create(description: String?) -> Description {
-            switch description {
-            case let name? where !name.isEmpty:
-                return .description(name)
-            default:
-                return .unnamed
-            }
-        }
-    }
-
-    enum Status: Equatable {
-        case started
-        case stopped
-    }
-
-    struct AccumulatedTime: Equatable {
-        public var total: TimeInterval = 0
-        public var startDate: Date?
-    }
-}
-
 public struct TimeEntryReducer: ReducerProtocol {
     @Dependency(\.date) var dateGenerator
 
-    public struct State: Equatable {
+    public struct State: Equatable, Identifiable {
+        public var id: UUID { entry.id }
         var entry: TrackingEntity
     }
 
     public enum Action: Equatable {
+        case toggleStatus
         case updateStatus(TrackingEntity.Status)
         case updateAccumulatedTime
         case updateDescription(String?)
@@ -68,22 +28,40 @@ public struct TimeEntryReducer: ReducerProtocol {
         action: Action
     ) -> ComposableArchitecture.EffectTask<Action> {
         switch action {
-        case let .updateStatus(status):
-            guard state.entry.status != status
+        case .toggleStatus:
+            switch state.entry.status {
+            case .started:
+                return .send(.updateStatus(.stopped))
+            case .stopped:
+                return .send(.updateStatus(.started))
+            }
+
+        case let .updateStatus(nextStatus):
+            guard state.entry.status != nextStatus
             else { return .none }
             let currentDate = dateGenerator()
-            state.entry.accumulatedTime.total = computeAccumulatedTime(for: state.entry, with: currentDate)
-            state.entry.accumulatedTime.startDate = status == .started
-                ? currentDate
-                : nil
-            state.entry.status = status
-            state.entry.updatedAt = currentDate
+            defer {
+                state.entry.status = nextStatus
+                state.entry.updatedAt = currentDate
+            }
+            switch nextStatus {
+            case .started:
+                state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession
+                state.entry.accumulatedTime.currentSession = 0
+                state.entry.accumulatedTime.startDate = currentDate
+            case .stopped:
+                state.entry.accumulatedTime.currentSession = computeAccumulatedTime(for: state.entry, with: currentDate)
+                state.entry.accumulatedTime.accumulatedSession += state.entry.accumulatedTime.currentSession
+                state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession
+                state.entry.accumulatedTime.currentSession = 0
+                state.entry.accumulatedTime.startDate = nil
+            }
             return .none
 
         case .updateAccumulatedTime:
             let currentDate = dateGenerator()
-            state.entry.accumulatedTime.total = computeAccumulatedTime(for: state.entry, with: currentDate)
-            state.entry.updatedAt = currentDate
+            state.entry.accumulatedTime.currentSession = computeAccumulatedTime(for: state.entry, with: currentDate)
+            state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession + state.entry.accumulatedTime.currentSession
             return .none
 
         case let .updateDescription(name):
@@ -109,7 +87,7 @@ public struct TimeEntryReducer: ReducerProtocol {
         guard entity.status == .started,
               let startDate = entity.accumulatedTime.startDate,
               startDate < date
-        else { return entity.accumulatedTime.total }
-        return entity.accumulatedTime.total + date.timeIntervalSince(startDate)
+        else { return entity.accumulatedTime.currentSession }
+        return date.timeIntervalSince(startDate)
     }
 }
