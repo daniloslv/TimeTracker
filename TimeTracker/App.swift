@@ -1,5 +1,5 @@
 //
-//  TimeTrackerApp.swift
+//  App.swift
 //  TimeTracker
 //
 //  Created by Danilo Souza on 04/02/23.
@@ -11,7 +11,7 @@ import SwiftUI
 struct TimeTrackerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Text("Time Tracker")
         }
     }
 }
