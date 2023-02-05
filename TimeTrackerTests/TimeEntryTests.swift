@@ -180,7 +180,7 @@ final class TimeEntryTests: XCTestCase {
             reducer: TimeEntryReducer()
         )
 
-        // Should update the name.
+        // Should update the description.
         store.dependencies.date = DateGenerator { firstUpdateDate }
         await store.send(.updateDescription("My work task")) {
             $0.entry.description = .description("My work task")
@@ -192,7 +192,7 @@ final class TimeEntryTests: XCTestCase {
             $0.entry.description = .unnamed
             $0.entry.updatedAt = secondUpdateDate
         }
-        // Should change the name.
+        // Should change the description.
         store.dependencies.date = DateGenerator { thirdUpdateDate }
         await store.send(.updateDescription("My important project")) {
             $0.entry.description = .description("My important project")

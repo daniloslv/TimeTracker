@@ -9,34 +9,45 @@ import ComposableArchitecture
 import Foundation
 
 public struct TrackingEntity: Equatable {
-    public enum Description: Equatable {
-        case unnamed
-        case description(String)
-
-        var value: String? {
-            switch self {
-            case .unnamed: return nil
-            case let .description(text): return text
-            }
-        }
-    }
-
-    public enum Status: Equatable {
-        case started
-        case stopped
-    }
-
-    public struct AccumulatedTime: Equatable {
-        public var total: TimeInterval = 0
-        public var startDate: Date?
-    }
-
     public let id: UUID
     public var description: Description
     public var status: Status
     public var accumulatedTime: AccumulatedTime
     public var createdAt: Date
     public var updatedAt: Date
+}
+
+public extension TrackingEntity {
+    enum Description: Equatable {
+        case unnamed
+        case description(String)
+
+        public var value: String? {
+            switch self {
+            case .unnamed: return nil
+            case let .description(text): return text
+            }
+        }
+
+        public static func create(description: String?) -> Description {
+            switch description {
+            case let name? where !name.isEmpty:
+                return .description(name)
+            default:
+                return .unnamed
+            }
+        }
+    }
+
+    enum Status: Equatable {
+        case started
+        case stopped
+    }
+
+    struct AccumulatedTime: Equatable {
+        public var total: TimeInterval = 0
+        public var startDate: Date?
+    }
 }
 
 public struct TimeEntryReducer: ReducerProtocol {
