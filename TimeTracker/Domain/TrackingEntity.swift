@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct TrackingEntity: Equatable {
+public struct TrackingEntity: Equatable, Codable {
     public let id: UUID
     public var description: Description
     public var status: Status
@@ -17,7 +17,7 @@ public struct TrackingEntity: Equatable {
 }
 
 public extension TrackingEntity {
-    enum Description: Equatable {
+    enum Description: Equatable, Codable {
         case unnamed
         case description(String)
 
@@ -40,14 +40,14 @@ public extension TrackingEntity {
 }
 
 public extension TrackingEntity {
-    enum Status: Equatable {
+    enum Status: Equatable, Codable {
         case started
         case stopped
     }
 }
 
 public extension TrackingEntity {
-    struct AccumulatedTime: Equatable {
+    struct AccumulatedTime: Equatable, Codable {
         public var total: TimeInterval = 0
         public var accumulatedSession: TimeInterval = 0
         public var currentSession: TimeInterval = 0

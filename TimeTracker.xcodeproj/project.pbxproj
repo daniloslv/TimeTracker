@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C0424DB29906B08001F88B8 /* PersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0424DA29906B08001F88B8 /* PersistenceTests.swift */; };
 		5C200AD4298F175800400291 /* TimeEntryReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD3298F175800400291 /* TimeEntryReducer.swift */; };
 		5C200AD6298F177200400291 /* TimeEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD5298F177200400291 /* TimeEntryTests.swift */; };
 		5C200ADA298F576600400291 /* TimeEntryCollectionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD9298F576600400291 /* TimeEntryCollectionReducer.swift */; };
 		5C200ADC298F599700400291 /* TimeEntryCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200ADB298F599700400291 /* TimeEntryCollectionTests.swift */; };
 		5C200ADE298FF9CB00400291 /* TrackingEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200ADD298FF9CB00400291 /* TrackingEntity.swift */; };
+		5C200AE32990588700400291 /* TrackingPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE22990588700400291 /* TrackingPersistence.swift */; };
+		5C200AE52990592F00400291 /* FileSystemPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE42990592F00400291 /* FileSystemPersistence.swift */; };
+		5C200AE7299059AA00400291 /* FileSystemClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE6299059AA00400291 /* FileSystemClient.swift */; };
 		5CD28791298EC632000F2173 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD28790298EC632000F2173 /* App.swift */; };
 		5CD28795298EC633000F2173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CD28794298EC633000F2173 /* Assets.xcassets */; };
 		5CD28798298EC633000F2173 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CD28797298EC633000F2173 /* Preview Assets.xcassets */; };
@@ -29,11 +33,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C0424DA29906B08001F88B8 /* PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceTests.swift; sourceTree = "<group>"; };
 		5C200AD3298F175800400291 /* TimeEntryReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryReducer.swift; sourceTree = "<group>"; };
 		5C200AD5298F177200400291 /* TimeEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryTests.swift; sourceTree = "<group>"; };
 		5C200AD9298F576600400291 /* TimeEntryCollectionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryCollectionReducer.swift; sourceTree = "<group>"; };
 		5C200ADB298F599700400291 /* TimeEntryCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryCollectionTests.swift; sourceTree = "<group>"; };
 		5C200ADD298FF9CB00400291 /* TrackingEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingEntity.swift; sourceTree = "<group>"; };
+		5C200AE22990588700400291 /* TrackingPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingPersistence.swift; sourceTree = "<group>"; };
+		5C200AE42990592F00400291 /* FileSystemPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemPersistence.swift; sourceTree = "<group>"; };
+		5C200AE6299059AA00400291 /* FileSystemClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemClient.swift; sourceTree = "<group>"; };
 		5CD2878D298EC632000F2173 /* TimeTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CD28790298EC632000F2173 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		5CD28794298EC633000F2173 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,6 +79,16 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		5C200AE12990586D00400291 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				5C200AE22990588700400291 /* TrackingPersistence.swift */,
+				5C200AE42990592F00400291 /* FileSystemPersistence.swift */,
+				5C200AE6299059AA00400291 /* FileSystemClient.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		5CD28784298EC631000F2173 = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +110,7 @@
 		5CD2878F298EC632000F2173 /* TimeTracker */ = {
 			isa = PBXGroup;
 			children = (
+				5C200AE12990586D00400291 /* Persistence */,
 				5C200AD2298F174700400291 /* Domain */,
 				5CD287C3298ED48E000F2173 /* Info.plist */,
 				5CD28790298EC632000F2173 /* App.swift */,
@@ -114,6 +133,7 @@
 			children = (
 				5C200AD5298F177200400291 /* TimeEntryTests.swift */,
 				5C200ADB298F599700400291 /* TimeEntryCollectionTests.swift */,
+				5C0424DA29906B08001F88B8 /* PersistenceTests.swift */,
 			);
 			path = TimeTrackerTests;
 			sourceTree = "<group>";
@@ -224,9 +244,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C200AE52990592F00400291 /* FileSystemPersistence.swift in Sources */,
+				5C200AE7299059AA00400291 /* FileSystemClient.swift in Sources */,
 				5C200AD4298F175800400291 /* TimeEntryReducer.swift in Sources */,
 				5C200ADA298F576600400291 /* TimeEntryCollectionReducer.swift in Sources */,
 				5CD28791298EC632000F2173 /* App.swift in Sources */,
+				5C200AE32990588700400291 /* TrackingPersistence.swift in Sources */,
 				5C200ADE298FF9CB00400291 /* TrackingEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C0424DB29906B08001F88B8 /* PersistenceTests.swift in Sources */,
 				5C200AD6298F177200400291 /* TimeEntryTests.swift in Sources */,
 				5C200ADC298F599700400291 /* TimeEntryCollectionTests.swift in Sources */,
 			);

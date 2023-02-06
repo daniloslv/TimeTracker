@@ -5,12 +5,17 @@
 //  Created by Danilo Souza on 05/02/23.
 //
 
+import Combine
 import ComposableArchitecture
 import Foundation
 
 public struct TimeEntryCollectionReducer: ReducerProtocol {
     @Dependency(\.uuid) var uuidGenerator
     @Dependency(\.date) var dateGenerator
+    @Dependency(\.mainQueue) var mainQueue
+    @Dependency(\.persistence) var persistence
+
+    private var cancellables: Set<AnyCancellable> = []
 
     public struct State: Equatable {
         public var entries: IdentifiedArrayOf<TimeEntryReducer.State> = []
@@ -23,8 +28,10 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
         case startDisplayTimer
         case updateEntries
         case loadEntries
+        case updateLoadedEntries([TrackingEntity])
         case saveEntries
         case timeTracking(id: TimeEntryReducer.State.ID, action: TimeEntryReducer.Action)
+        case nothing
     }
 
     private enum TimerTickID {}
@@ -50,21 +57,26 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
                     updatedAt: createdAt
                 )
                 state.entries[id: newEntityId] = TimeEntryReducer.State(entry: newEntity)
-                return .none
+                return .send(.saveEntries)
 
             case let .insert(entry: entry):
                 guard state.entries[id: entry.id] == nil
                 else { return .none }
                 state.entries[id: entry.id] = entry
-                return .none
+                return .send(.saveEntries)
 
             case let .remove(id: id):
                 guard state.entries[id: id] != nil
                 else { return .none }
                 state.entries[id: id] = nil
-                return .none
+                return .send(.saveEntries)
 
-            case .timeTracking(id: _, action: _):
+            case .timeTracking(id: _, action: .toggleStatus),
+                 .timeTracking(id: _, action: .updateStatus),
+                 .timeTracking(id: _, action: .updateDescription):
+                return .send(.saveEntries)
+
+            case .timeTracking:
                 return .none
 
             case .startDisplayTimer:
@@ -84,9 +96,29 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
                 )
 
             case .loadEntries:
-                fatalError()
+                return EffectPublisher(
+                    persistence.loadTrackings()
+                        .receive(on: mainQueue)
+                        .replaceError(with: [])
+                        .map(Action.updateLoadedEntries)
+                )
+
+            case let .updateLoadedEntries(loadedEntries):
+                let sortedTrackings = loadedEntries
+                    .sorted { $0.createdAt < $1.createdAt }
+                    .map(TimeEntryReducer.State.init(entry:))
+                state.entries = IdentifiedArrayOf(uniqueElements: sortedTrackings)
+                return .send(.updateEntries)
+
             case .saveEntries:
-                fatalError()
+                return EffectPublisher(
+                    persistence.saveTrackings(trackings: state.entries.map(\.entry))
+                        .replaceError(with: ())
+                        .map { _ in Action.nothing }
+                )
+
+            case .nothing:
+                return .none
             }
         }
         .forEach(\.entries, action: /Action.timeTracking(id:action:)) {
