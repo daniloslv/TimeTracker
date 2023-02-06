@@ -17,9 +17,7 @@ struct TimeTrackerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Group {
-                HomeView(store: store)
-            }
+            HomeView(store: store)
         }
     }
 }

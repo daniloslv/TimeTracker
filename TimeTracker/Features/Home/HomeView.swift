@@ -27,11 +27,22 @@ struct HomeView: View {
     }
 
     var body: some View {
-        NavigationView {
-            TrackingListView(store: store)
-                .navigationTitle(viewStore.state.pageTitle)
-                .onAppear { viewStore.send(.loadEntries) }
-        }
+        #if os(macOS)
+            NavigationStack {
+                TrackingListView(store: store)
+                    .navigationTitle(viewStore.state.pageTitle)
+                    .onAppear { viewStore.send(.loadEntries) }
+            }
+        #endif
+
+        #if os(iOS)
+            NavigationView {
+                TrackingListView(store: store)
+                    .navigationTitle(viewStore.state.pageTitle)
+                    .onAppear { viewStore.send(.loadEntries) }
+            }
+            .navigationViewStyle(.stack)
+        #endif
     }
 }
 

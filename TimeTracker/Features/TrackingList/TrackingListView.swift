@@ -26,33 +26,32 @@ struct TrackingListView: View {
     }
 
     var body: some View {
-        List {
-            Button("Clear all") {
-                viewStore.send(.removeAll, animation: .default)
-            }
-            .padding()
-            .buttonStyle(.bordered)
-            .buttonBorderShape(.roundedRectangle)
-            .frame(alignment: .trailing)
+        VStack {
+            List {
+                Button("Clear all") {
+                    viewStore.send(.removeAll, animation: .default)
+                }
+                .padding()
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.roundedRectangle)
+                .frame(alignment: .trailing)
 
-            ForEachStore(
-                self.store.scope(
-                    state: { $0.entries },
-                    action: TimeEntryCollectionReducer.Action.timeTracking
-                ),
-                content: { TrackingCardSmall(store: $0).padding([.top, .bottom], 8) }
-            )
-        }
-        .listStyle(.inset)
-        .toolbar {
-            Button("Add new") {
-                viewStore.send(
-                    .createNew(description: nil, status: .started),
-                    animation: .default
+                ForEachStore(
+                    self.store.scope(
+                        state: { $0.entries },
+                        action: TimeEntryCollectionReducer.Action.timeTracking
+                    ),
+                    content: { TrackingCardSmall(store: $0).padding([.top, .bottom], 8) }
                 )
             }
-            .onAppear {
-                viewStore.send(.startDisplayTimer)
+            .listStyle(.automatic)
+            .toolbar {
+                Button(action: { viewStore.send(.createNew(description: nil, status: .started), animation: .default) }) {
+                    Label("Add new", systemImage: "plus.rectangle.fill")
+                }
+                .onAppear {
+                    viewStore.send(.startDisplayTimer)
+                }
             }
         }
     }

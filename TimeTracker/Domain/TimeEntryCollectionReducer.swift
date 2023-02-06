@@ -13,7 +13,6 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
     @Dependency(\.uuid) var uuidGenerator
     @Dependency(\.date) var dateGenerator
     @Dependency(\.mainQueue) var mainQueue
-    @Dependency(\.mainRunLoop) var mainRunLoop
     @Dependency(\.persistence) var persistence
 
     private var cancellables: Set<AnyCancellable> = []
@@ -69,7 +68,8 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
 
             case .startDisplayTimer:
                 return .run { send in
-                    for await _ in self.mainRunLoop.timer(interval: .seconds(1), tolerance: .seconds(1)) {
+                    while true {
+                        try await Task.sleep(nanoseconds: 1 * NSEC_PER_SEC)
                         await send(.refreshDisplayTimer)
                     }
                 }
@@ -122,7 +122,6 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
             case .loadEntries:
                 return EffectPublisher(
                     persistence.loadTrackings()
-                        .receive(on: mainQueue)
                         .replaceError(with: [])
                         .map(Action.loadEntriesResponse)
                 )
@@ -139,7 +138,6 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
             case .saveEntries:
                 return EffectPublisher(
                     persistence.saveTrackings(trackings: state.entries.map(\.entry))
-                        .receive(on: mainQueue)
                         .replaceError(with: ())
                         .map { _ in Action.noOp }
                 )
