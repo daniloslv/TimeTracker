@@ -189,10 +189,10 @@ final class TimeEntryTests: XCTestCase {
             $0.entry.description = .description("My work task")
             $0.entry.updatedAt = firstUpdateDate
         }
-        // Should result in .unnamed.
+        // Should result in empty string
         store.dependencies.date = .constant(secondUpdateDate)
         await store.send(.updateDescription("")) {
-            $0.entry.description = .unnamed
+            $0.entry.description = .description("")
             $0.entry.updatedAt = secondUpdateDate
         }
         // Should change the description.
@@ -203,8 +203,8 @@ final class TimeEntryTests: XCTestCase {
         }
         // Should result in .unnamed.
         store.dependencies.date = .constant(fourthUpdateDate)
-        await store.send(.updateDescription(nil)) {
-            $0.entry.description = .unnamed
+        await store.send(.updateDescription("")) {
+            $0.entry.description = .description("")
             $0.entry.updatedAt = fourthUpdateDate
         }
     }

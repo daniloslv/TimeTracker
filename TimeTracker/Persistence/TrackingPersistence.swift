@@ -26,34 +26,3 @@ public struct TrackingPersistenceClient: TrackingPersistenceProtocol {
         save(trackings)
     }
 }
-
-extension TrackingPersistenceClient: DependencyKey {
-    public static let liveValue = Self.liveFileSystemPersistence()
-}
-
-public extension TrackingPersistenceClient {
-    static func liveFileSystemPersistence() -> Self {
-        let persistence = FileSystemPersistence(
-            configuration: FileSystemPersistenceConfiguration(),
-            fileClient: FileSystemClient()
-        )
-        return Self(
-            load: persistence.loadTrackings,
-            save: persistence.saveTrackings(trackings:)
-        )
-    }
-}
-
-extension TrackingPersistenceClient: TestDependencyKey {
-    public static let testValue = Self(
-        load: { Just([]).setFailureType(to: Error.self).eraseToAnyPublisher() },
-        save: { _ in Just(()).setFailureType(to: Error.self).eraseToAnyPublisher() }
-    )
-}
-
-public extension DependencyValues {
-    var persistence: TrackingPersistenceClient {
-        get { self[TrackingPersistenceClient.self] }
-        set { self[TrackingPersistenceClient.self] = newValue }
-    }
-}

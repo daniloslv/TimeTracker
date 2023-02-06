@@ -30,7 +30,7 @@ public extension TrackingEntity {
 
         public static func createWith(description: String?) -> Description {
             switch description {
-            case let name? where !name.isEmpty:
+            case let name?:
                 return .description(name)
             default:
                 return .unnamed

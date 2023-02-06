@@ -50,6 +50,7 @@ public class FileSystemPersistence: TrackingPersistenceProtocol {
         }
 
         return fileClient.loadFile(path: trackingsPath)
+            .subscribe(on: DispatchQueue.global(qos: .default))
             .decode(type: [TrackingEntity].self, decoder: JSONDecoder())
             .mapError(FileSystemPersistenceError.decodingError)
             .eraseToAnyPublisher()
@@ -62,6 +63,7 @@ public class FileSystemPersistence: TrackingPersistenceProtocol {
 
         return Result<Data, Error> { try JSONEncoder().encode(trackings) }
             .publisher
+            .subscribe(on: DispatchQueue.global(qos: .background))
             .mapError(FileSystemPersistenceError.encodingError)
             .flatMap { self.fileClient.saveFile(path: trackingsPath, data: $0) }
             .mapError(FileSystemPersistenceError.fileSavingError)

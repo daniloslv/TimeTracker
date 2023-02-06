@@ -13,14 +13,19 @@ public struct TimeEntryReducer: ReducerProtocol {
 
     public struct State: Equatable, Identifiable {
         public var id: UUID { entry.id }
-        var entry: TrackingEntity
+        public var entry: TrackingEntity
+
+        public init(entry: TrackingEntity) {
+            self.entry = entry
+        }
     }
 
     public enum Action: Equatable {
         case toggleStatus
         case updateStatus(TrackingEntity.Status)
+        case updateDescription(String)
         case updateAccumulatedTime
-        case updateDescription(String?)
+        case remove
     }
 
     public func reduce(
@@ -30,10 +35,8 @@ public struct TimeEntryReducer: ReducerProtocol {
         switch action {
         case .toggleStatus:
             switch state.entry.status {
-            case .started:
-                return .send(.updateStatus(.stopped))
-            case .stopped:
-                return .send(.updateStatus(.started))
+            case .started: return .send(.updateStatus(.stopped))
+            case .stopped: return .send(.updateStatus(.started))
             }
 
         case let .updateStatus(nextStatus):
@@ -69,18 +72,23 @@ public struct TimeEntryReducer: ReducerProtocol {
             else { return .none }
             let currentDate = dateGenerator()
             switch name {
-            case let name? where !name.isEmpty:
+            case let name where !name.isEmpty:
                 state.entry.description = .description(name)
                 state.entry.updatedAt = currentDate
             default:
-                state.entry.description = .unnamed
+                state.entry.description = .description("")
                 state.entry.updatedAt = currentDate
             }
             return .none
+
+        case .remove:
+            return .none
         }
     }
+}
 
-    private func computeAccumulatedTime(
+private extension TimeEntryReducer {
+    func computeAccumulatedTime(
         for entity: TrackingEntity,
         with date: Date
     ) -> TimeInterval {
