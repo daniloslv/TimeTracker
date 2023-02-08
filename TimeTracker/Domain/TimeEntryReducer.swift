@@ -28,62 +28,84 @@ public struct TimeEntryReducer: ReducerProtocol {
         case remove
     }
 
-    public func reduce(
-        into state: inout State,
-        action: Action
-    ) -> ComposableArchitecture.EffectTask<Action> {
-        switch action {
-        case .toggleStatus:
-            switch state.entry.status {
-            case .started: return .send(.updateStatus(.stopped))
-            case .stopped: return .send(.updateStatus(.started))
-            }
+    public var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .toggleStatus:
+                switch state.entry.status {
+                case .started: return .send(.updateStatus(.stopped))
+                case .stopped: return .send(.updateStatus(.started))
+                }
 
-        case let .updateStatus(nextStatus):
-            guard state.entry.status != nextStatus
-            else { return .none }
-            let currentDate = dateGenerator()
-            defer {
-                state.entry.status = nextStatus
-                state.entry.updatedAt = currentDate
-            }
-            switch nextStatus {
-            case .started:
-                state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession
-                state.entry.accumulatedTime.currentSession = 0
-                state.entry.accumulatedTime.startDate = currentDate
-            case .stopped:
+            case let .updateStatus(nextStatus):
+                guard state.entry.status != nextStatus
+                else { return .none }
+                let currentDate = dateGenerator()
+                defer {
+                    state.entry.status = nextStatus
+                    state.entry.updatedAt = currentDate
+                }
+                switch nextStatus {
+                case .started:
+                    state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession
+                    state.entry.accumulatedTime.currentSession = 0
+                    state.entry.accumulatedTime.startDate = currentDate
+                case .stopped:
+                    state.entry.accumulatedTime.currentSession = computeAccumulatedTime(for: state.entry, with: currentDate)
+                    state.entry.accumulatedTime.accumulatedSession += state.entry.accumulatedTime.currentSession
+                    state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession
+                    state.entry.accumulatedTime.currentSession = 0
+                    state.entry.accumulatedTime.startDate = nil
+                }
+                return .none
+
+            case .updateAccumulatedTime:
+                let currentDate = dateGenerator()
                 state.entry.accumulatedTime.currentSession = computeAccumulatedTime(for: state.entry, with: currentDate)
-                state.entry.accumulatedTime.accumulatedSession += state.entry.accumulatedTime.currentSession
-                state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession
-                state.entry.accumulatedTime.currentSession = 0
-                state.entry.accumulatedTime.startDate = nil
+                state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession + state.entry.accumulatedTime.currentSession
+                return .none
+
+            case let .updateDescription(name):
+                guard name != state.entry.description.value
+                else { return .none }
+                let currentDate = dateGenerator()
+                switch name {
+                case let name where !name.isEmpty:
+                    state.entry.description = .description(name)
+                    state.entry.updatedAt = currentDate
+                default:
+                    state.entry.description = .description("")
+                    state.entry.updatedAt = currentDate
+                }
+                return .none
+
+            case .remove:
+                return .none
             }
-            return .none
-
-        case .updateAccumulatedTime:
-            let currentDate = dateGenerator()
-            state.entry.accumulatedTime.currentSession = computeAccumulatedTime(for: state.entry, with: currentDate)
-            state.entry.accumulatedTime.total = state.entry.accumulatedTime.accumulatedSession + state.entry.accumulatedTime.currentSession
-            return .none
-
-        case let .updateDescription(name):
-            guard name != state.entry.description.value
-            else { return .none }
-            let currentDate = dateGenerator()
-            switch name {
-            case let name where !name.isEmpty:
-                state.entry.description = .description(name)
-                state.entry.updatedAt = currentDate
-            default:
-                state.entry.description = .description("")
-                state.entry.updatedAt = currentDate
-            }
-            return .none
-
-        case .remove:
-            return .none
         }
+        .analytics(
+            isEnabled: { state, action in
+                switch action {
+                case Action.updateDescription,
+                     Action.remove,
+                     Action.updateStatus:
+                    return true
+                default: return false
+                }
+            },
+            triggerOnChageOf: \.entry
+        )
+    }
+}
+
+extension TrackingEntity: AnalyticsEventProducer {
+    public func produceAnalyticsEvent() -> String {
+        return [
+            "Entity id: \(self.id)",
+            "description: \(self.description.value ?? "")",
+            "status: \(self.status)",
+        ].joined(separator: "\n")
+        
     }
 }
 

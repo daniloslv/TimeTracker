@@ -19,6 +19,9 @@
 		5C200AE32990588700400291 /* TrackingPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE22990588700400291 /* TrackingPersistence.swift */; };
 		5C200AE52990592F00400291 /* FileSystemPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE42990592F00400291 /* FileSystemPersistence.swift */; };
 		5C200AE7299059AA00400291 /* FileSystemClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE6299059AA00400291 /* FileSystemClient.swift */; };
+		5C4D79DC2994161C0034BCCC /* AnalyticsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4D79DB2994161C0034BCCC /* AnalyticsReducer.swift */; };
+		5CC7212C2992F3CB000CF5AB /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC7212B2992F3CB000CF5AB /* Typography.swift */; };
+		5CC7212E2992F3DA000CF5AB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC7212D2992F3DA000CF5AB /* Style.swift */; };
 		5CCD9F03299131AA001C925F /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCD9F02299131AA001C925F /* AppDependencies.swift */; };
 		5CD28791298EC632000F2173 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD28790298EC632000F2173 /* App.swift */; };
 		5CD28795298EC633000F2173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CD28794298EC633000F2173 /* Assets.xcassets */; };
@@ -49,6 +52,9 @@
 		5C200AE22990588700400291 /* TrackingPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingPersistence.swift; sourceTree = "<group>"; };
 		5C200AE42990592F00400291 /* FileSystemPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemPersistence.swift; sourceTree = "<group>"; };
 		5C200AE6299059AA00400291 /* FileSystemClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemClient.swift; sourceTree = "<group>"; };
+		5C4D79DB2994161C0034BCCC /* AnalyticsReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsReducer.swift; sourceTree = "<group>"; };
+		5CC7212B2992F3CB000CF5AB /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		5CC7212D2992F3DA000CF5AB /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		5CCD9F02299131AA001C925F /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		5CD2878D298EC632000F2173 /* TimeTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CD28790298EC632000F2173 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -91,6 +97,7 @@
 			children = (
 				5C0424DD2990C1FC001F88B8 /* TrackingListView.swift */,
 				5C0424DF2990C909001F88B8 /* TrackingCardSmall.swift */,
+				5C4D79DB2994161C0034BCCC /* AnalyticsReducer.swift */,
 			);
 			path = TrackingList;
 			sourceTree = "<group>";
@@ -123,6 +130,15 @@
 			path = Persistence;
 			sourceTree = "<group>";
 		};
+		5CC7212A2992F3A2000CF5AB /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				5CC7212D2992F3DA000CF5AB /* Style.swift */,
+				5CC7212B2992F3CB000CF5AB /* Typography.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
 		5CD28784298EC631000F2173 = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +160,7 @@
 		5CD2878F298EC632000F2173 /* TimeTracker */ = {
 			isa = PBXGroup;
 			children = (
+				5CC7212A2992F3A2000CF5AB /* DesignSystem */,
 				5C0424DC2990C1E2001F88B8 /* Features */,
 				5C200AE12990586D00400291 /* Persistence */,
 				5C200AD2298F174700400291 /* Domain */,
@@ -285,11 +302,14 @@
 				5C200AE7299059AA00400291 /* FileSystemClient.swift in Sources */,
 				5C200AD4298F175800400291 /* TimeEntryReducer.swift in Sources */,
 				5C0424E42990E78B001F88B8 /* HomeView.swift in Sources */,
+				5CC7212E2992F3DA000CF5AB /* Style.swift in Sources */,
 				5C200ADA298F576600400291 /* TimeEntryCollectionReducer.swift in Sources */,
 				5C0424DE2990C1FC001F88B8 /* TrackingListView.swift in Sources */,
 				5CD28791298EC632000F2173 /* App.swift in Sources */,
+				5C4D79DC2994161C0034BCCC /* AnalyticsReducer.swift in Sources */,
 				5C200AE32990588700400291 /* TrackingPersistence.swift in Sources */,
 				5C0424E02990C909001F88B8 /* TrackingCardSmall.swift in Sources */,
+				5CC7212C2992F3CB000CF5AB /* Typography.swift in Sources */,
 				5C200ADE298FF9CB00400291 /* TrackingEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,14 +31,11 @@ struct TrackingListView: View {
                 Button("Clear all") {
                     viewStore.send(.removeAll, animation: .default)
                 }
-                .padding()
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.roundedRectangle)
-                .frame(alignment: .trailing)
+                .buttonStyle(.action.variant(.negative))
 
                 ForEachStore(
                     self.store.scope(
-                        state: { $0.entries },
+                        state: \.entries,
                         action: TimeEntryCollectionReducer.Action.timeTracking
                     ),
                     content: { TrackingCardSmall(store: $0).padding([.top, .bottom], 8) }
