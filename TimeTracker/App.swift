@@ -10,14 +10,14 @@ import SwiftUI
 
 @main
 struct TimeTrackerApp: App {
-    let store = StoreOf<TimeEntryCollectionReducer>(
-        initialState: TimeEntryCollectionReducer.State(entries: .init()),
-        reducer: TimeEntryCollectionReducer()
-    )
+  let store = StoreOf<TimeEntryCollectionReducer>(
+    initialState: TimeEntryCollectionReducer.State(entries: .init()),
+    reducer: TimeEntryCollectionReducer()
+  )
 
-    var body: some Scene {
-        WindowGroup {
-            HomeView(store: store)
-        }
+  var body: some Scene {
+    WindowGroup {
+      HomeView(store: store)
     }
+  }
 }
