@@ -146,7 +146,6 @@ public struct TimeEntryCollectionReducer: ReducerProtocol {
         return EffectPublisher(
           persistence.saveTrackings(trackings: state.entries.map(\.entry))
             .replaceError(with: ())
-            .map { _ in print("Saved entries...", action) }
             .map { _ in Action.noOp }
         )
 
