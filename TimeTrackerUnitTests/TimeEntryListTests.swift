@@ -1,5 +1,5 @@
 //
-//  TimeEntryCollectionTests.swift
+//  TimeEntryListTests.swift
 //  TimeTrackerTests
 //
 //  Created by Danilo Souza on 05/02/23.
@@ -11,7 +11,7 @@ import XCTest
 @testable import TimeTracker
 
 @MainActor
-final class TimeEntryCollectionTests: XCTestCase {
+final class TimeEntryListTests: XCTestCase {
   private var currentSavedData: Data?
 
   override func setUpWithError() throws {
@@ -31,8 +31,8 @@ final class TimeEntryCollectionTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryCollectionReducer.State(entries: []),
-      reducer: TimeEntryCollectionReducer()
+      initialState: TimeEntryList.State(entries: []),
+      reducer: TimeEntryList()
     )
 
     store.dependencies.uuid = .constant(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
@@ -40,11 +40,8 @@ final class TimeEntryCollectionTests: XCTestCase {
     store.dependencies.mainQueue = .immediate
 
     await store.send(.createNew(description: nil, status: .stopped)) {
-      $0.entries = [TimeEntryReducer.State(entry: newTimeTracking)]
+      $0.entries = [TimeEntry.State(entry: newTimeTracking)]
     }
-    await store.receive(.sortEntries)
-    await store.receive(.saveEntries)
-    await store.receive(.noOp)
   }
 
   func test_create_new_entry_with_description() async throws {
@@ -60,20 +57,18 @@ final class TimeEntryCollectionTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryCollectionReducer.State(entries: []),
-      reducer: TimeEntryCollectionReducer()
-    )
+      initialState: TimeEntryList.State(entries: []),
+      reducer: TimeEntryList()
+    ) {
+      $0.mainQueue = .immediate
+    }
 
     store.dependencies.uuid = .constant(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
     store.dependencies.date = .constant(createdAt)
-    store.dependencies.mainQueue = .immediate
 
     await store.send(.createNew(description: "My important project", status: .stopped)) {
-      $0.entries = [TimeEntryReducer.State(entry: newTimeTracking)]
+      $0.entries = [TimeEntry.State(entry: newTimeTracking)]
     }
-    await store.receive(.sortEntries)
-    await store.receive(.saveEntries)
-    await store.receive(.noOp)
   }
 
   func test_remove_entry() async throws {
@@ -89,18 +84,16 @@ final class TimeEntryCollectionTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryCollectionReducer.State(entries: [TimeEntryReducer.State(entry: existingTimeTracking)]),
-      reducer: TimeEntryCollectionReducer()
+      initialState: TimeEntryList.State(entries: [TimeEntry.State(entry: existingTimeTracking)]),
+      reducer: TimeEntryList()
     )
     store.dependencies.uuid = .constant(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
     store.dependencies.date = .constant(createdAt)
     store.dependencies.mainQueue = .immediate
 
-    await store.send(.remove(id: existingTimeTracking.id)) {
+    await store.send(.timeTracking(id: existingTimeTracking.id, action: .remove)) {
       $0.entries = []
     }
-    await store.receive(.saveEntries)
-    await store.receive(.noOp)
   }
 
   func test_remove_entry_non_existing() async throws {
@@ -116,78 +109,30 @@ final class TimeEntryCollectionTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryCollectionReducer.State(entries: [TimeEntryReducer.State(entry: existingTimeTracking)]),
-      reducer: TimeEntryCollectionReducer()
-    )
-    store.dependencies.uuid = .constant(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
-    store.dependencies.date = .constant(createdAt)
-    store.dependencies.mainQueue = .immediate
+      initialState: TimeEntryList.State(entries: [TimeEntry.State(entry: existingTimeTracking)]),
+      reducer: TimeEntryList()
+    ) {
+      $0.mainQueue = .immediate
+    }
 
-    await store.send(.remove(id: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!))
+    let nonExistingId = UUID(uuidString: "00000000-0000-0000-0000-000000000002")!
+    await store.send(.timeTracking(id: nonExistingId, action: .remove))
   }
 
   func test_remove_entry_on_empty_collection() async throws {
-    let createdAt = Date(timeIntervalSince1970: 1_111_100_000)
-
     let store = TestStore(
-      initialState: TimeEntryCollectionReducer.State(entries: []),
-      reducer: TimeEntryCollectionReducer()
+      initialState: TimeEntryList.State(entries: []),
+      reducer: TimeEntryList()
     )
-    store.dependencies.uuid = .constant(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
-    store.dependencies.date = .constant(createdAt)
     store.dependencies.mainQueue = .immediate
 
-    await store.send(.remove(id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!))
-  }
-
-  func test_load_persistence() async throws {
-    let createdAt = Date(timeIntervalSince1970: 1_111_100_000)
-    let store = TestStore(
-      initialState: TimeEntryCollectionReducer.State(entries: []),
-      reducer: TimeEntryCollectionReducer()
-    )
-    store.dependencies.uuid = .constant(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
-    store.dependencies.date = .constant(createdAt)
-    store.dependencies.mainQueue = .immediate
-    store.dependencies.persistence.load = { self.fakeLoadPersistence() }
-    store.dependencies.persistence.save = { self.fakeSavePersistence($0) }
-
-    await store.send(.loadEntries)
-    await store.receive(.loadEntriesResponse(getMockEntities())) {
-      $0.entries = IdentifiedArrayOf(uniqueElements: self.getMockEntries())
-    }
-    await store.receive(.sortEntries)
-    await store.receive(.refreshDisplayTimer)
-    await store
-      .receive(.timeTracking(id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!, action: .updateAccumulatedTime))
-    await store
-      .receive(.timeTracking(id: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!, action: .updateAccumulatedTime))
-    await store
-      .receive(.timeTracking(id: UUID(uuidString: "00000000-0000-0000-0000-000000000003")!, action: .updateAccumulatedTime))
-    await store
-      .receive(.timeTracking(id: UUID(uuidString: "00000000-0000-0000-0000-000000000004")!, action: .updateAccumulatedTime))
-  }
-
-  func test_save_persistence() async throws {
-    let createdAt = Date(timeIntervalSince1970: 1_111_100_000)
-    let store = TestStore(
-      initialState: TimeEntryCollectionReducer.State(entries: IdentifiedArrayOf(uniqueElements: getMockEntries())),
-      reducer: TimeEntryCollectionReducer()
-    )
-    store.dependencies.uuid = .constant(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!)
-    store.dependencies.date = .constant(createdAt)
-    store.dependencies.mainQueue = .immediate
-    store.dependencies.persistence.load = { self.fakeLoadPersistence() }
-    store.dependencies.persistence.save = { self.fakeSavePersistence($0) }
-
-    await store.send(.saveEntries)
-    await store.receive(.noOp)
-    XCTAssertEqual(currentSavedData, getMockSavedData())
+    let id = UUID(uuidString: "00000000-0000-0000-0000-000000000001")!
+    await store.send(.timeTracking(id: id, action: .remove))
   }
 }
 
 // swiftlint:disable all
-extension TimeEntryCollectionTests {
+extension TimeEntryListTests {
   private func getMockSavedData() -> Data? {
     """
     [{"status":{"started":{}},"id":"00000000-0000-0000-0000-000000000001","accumulatedTime":{"currentSession":0,"accumulatedSession":0,"startDate":132792800,"total":0},"updatedAt":132792800,"description":{"unnamed":{}},"createdAt":132792800},{"status":{"started":{}},"id":"00000000-0000-0000-0000-000000000002","accumulatedTime":{"currentSession":0,"accumulatedSession":0,"startDate":132792800,"total":0},"updatedAt":132792800,"description":{"description":{"_0":"My Project"}},"createdAt":132792800},{"status":{"started":{}},"id":"00000000-0000-0000-0000-000000000003","accumulatedTime":{"currentSession":0,"accumulatedSession":0,"startDate":132792800,"total":0},"updatedAt":132792800,"description":{"unnamed":{}},"createdAt":132792800},{"status":{"started":{}},"id":"00000000-0000-0000-0000-000000000004","accumulatedTime":{"currentSession":0,"accumulatedSession":0,"startDate":132792800,"total":0},"updatedAt":132792800,"description":{"description":{"_0":"My Task"}},"createdAt":132792800}]
@@ -199,8 +144,8 @@ extension TimeEntryCollectionTests {
     return try! JSONDecoder().decode([TrackingEntity].self, from: json)
   }
 
-  private func getMockEntries() -> [TimeEntryReducer.State] {
-    getMockEntities().map(TimeEntryReducer.State.init(entry:))
+  private func getMockEntries() -> [TimeEntry.State] {
+    getMockEntities().map(TimeEntry.State.init(entry:))
   }
 
   private func fakeLoadPersistence() -> AnyPublisher<[TrackingEntity], Error> {

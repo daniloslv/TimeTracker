@@ -19,7 +19,7 @@ extension TrackingCardView {
     var toggleButtonText: String { entry.status == .started ? "Pause" : "Start" }
     var showDeleteButton: Bool
 
-    init(state: TimeEntryReducer.State) {
+    init(state: TimeEntry.State) {
       entry = state.entry
       descriptionText = state.entry.description.value ?? "+ Add description"
       timeText = TimeFormatter.liveValue.timeStringFrom(state.entry.accumulatedTime.total)
@@ -31,12 +31,12 @@ extension TrackingCardView {
 }
 
 struct TrackingCardView: View {
-  typealias Action = TimeEntryReducer.Action
+  typealias Action = TimeEntry.Action
 
-  let store: StoreOf<TimeEntryReducer>
+  let store: StoreOf<TimeEntry>
   @ObservedObject var viewStore: ViewStore<ViewState, Action>
 
-  init(store: StoreOf<TimeEntryReducer>) {
+  init(store: StoreOf<TimeEntry>) {
     self.store = store
     viewStore = ViewStore(store, observe: ViewState.init)
   }
@@ -109,7 +109,7 @@ struct TrackingCardSmall_Previews: PreviewProvider {
               updatedAt: Date(timeIntervalSince1970: 1_111_100_000)
             )
           ),
-          reducer: TimeEntryReducer()
+          reducer: TimeEntry()
         )
       )
       .previewDisplayName("Started")
@@ -132,7 +132,7 @@ struct TrackingCardSmall_Previews: PreviewProvider {
               updatedAt: Date(timeIntervalSince1970: 1_111_100_000)
             )
           ),
-          reducer: TimeEntryReducer()
+          reducer: TimeEntry()
         )
       )
       .previewDisplayName("Stopped")

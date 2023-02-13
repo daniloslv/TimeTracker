@@ -1,5 +1,5 @@
 //
-//  PersistenceTests.swift
+//  PersistenceClientTests.swift
 //  TimeTrackerTests
 //
 //  Created by Danilo Souza on 05/02/23.
@@ -9,7 +9,7 @@ import Combine
 import XCTest
 @testable import TimeTracker
 
-final class PersistenceTests: XCTestCase {
+final class PersistenceClientTests: XCTestCase {
   private var filePersistence: FileSystemPersistence!
   private var mockTrackings: [TrackingEntity]!
   private var cancellables: Set<AnyCancellable>!
@@ -29,7 +29,7 @@ final class PersistenceTests: XCTestCase {
   }
 
   // This will run a real file saving and file loading test.
-  // They need to be done in this section:
+  // They need to be done in this sequence:
   // First: save the file.
   // Second: load the saved file.
   // For tests, it will save and load to a file named `testing-time-trackings.json`.

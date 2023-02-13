@@ -10,20 +10,20 @@ import SwiftUI
 
 extension HomeView {
   struct ViewState: Equatable {
-    let trackings: IdentifiedArrayOf<TimeEntryReducer.State>
+    let trackings: IdentifiedArrayOf<TimeEntry.State>
     var pageTitle: String = "Time Tracker"
 
-    init(state: TimeEntryCollectionReducer.State) {
+    init(state: TimeEntryList.State) {
       trackings = state.entries
     }
   }
 }
 
 struct HomeView: View {
-  let store: StoreOf<TimeEntryCollectionReducer>
-  @ObservedObject var viewStore: ViewStore<ViewState, TimeEntryCollectionReducer.Action>
+  let store: StoreOf<TimeEntryList>
+  @ObservedObject var viewStore: ViewStore<ViewState, TimeEntryList.Action>
 
-  init(store: StoreOf<TimeEntryCollectionReducer>) {
+  init(store: StoreOf<TimeEntryList>) {
     self.store = store
     viewStore = ViewStore(store.scope(state: ViewState.init))
   }
@@ -33,7 +33,6 @@ struct HomeView: View {
       NavigationStack {
         TrackingListView(store: store)
           .navigationTitle(viewStore.state.pageTitle)
-          .onAppear { viewStore.send(.loadEntries) }
       }
     #endif
 
@@ -41,7 +40,6 @@ struct HomeView: View {
       NavigationView {
         TrackingListView(store: store)
           .navigationTitle(viewStore.state.pageTitle)
-          .onAppear { viewStore.send(.loadEntries) }
       }
       .navigationViewStyle(.stack)
     #endif
@@ -76,7 +74,7 @@ struct HomeView_Previews: PreviewProvider {
             )
           ),
         ]),
-        reducer: TimeEntryCollectionReducer()
+        reducer: TimeEntryList()
       )
     )
   }

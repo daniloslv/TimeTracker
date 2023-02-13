@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TimeEntry.swift
 //
 //
 //  Created by Danilo Souza on 04/02/23.
@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Foundation
 
-public struct TimeEntryReducer: ReducerProtocol {
+public struct TimeEntry: ReducerProtocol {
   @Dependency(\.date) var dateGenerator
 
   public struct State: Equatable, Identifiable {
@@ -62,7 +62,7 @@ public struct TimeEntryReducer: ReducerProtocol {
   }
 }
 
-extension TimeEntryReducer {
+extension TimeEntry {
   private func computeAccumulatedTime(
     for entity: TrackingEntity,
     with date: Date

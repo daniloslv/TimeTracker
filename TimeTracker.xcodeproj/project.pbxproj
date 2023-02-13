@@ -7,18 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5C0424DB29906B08001F88B8 /* PersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0424DA29906B08001F88B8 /* PersistenceTests.swift */; };
+		5C0223692997123E005A296C /* PersistenceClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0424DA29906B08001F88B8 /* PersistenceClientTests.swift */; };
+		5C02236B299713DF005A296C /* PersistenceReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02236A299713DF005A296C /* PersistenceReducerTests.swift */; };
+		5C02236D29971587005A296C /* PersistenceReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C02236C29971587005A296C /* PersistenceReducer.swift */; };
 		5C0424DE2990C1FC001F88B8 /* TrackingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0424DD2990C1FC001F88B8 /* TrackingListView.swift */; };
 		5C0424E02990C909001F88B8 /* TrackingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0424DF2990C909001F88B8 /* TrackingCardView.swift */; };
 		5C0424E42990E78B001F88B8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0424E32990E78B001F88B8 /* HomeView.swift */; };
-		5C200AD4298F175800400291 /* TimeEntryReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD3298F175800400291 /* TimeEntryReducer.swift */; };
+		5C200AD4298F175800400291 /* TimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD3298F175800400291 /* TimeEntry.swift */; };
 		5C200AD6298F177200400291 /* TimeEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD5298F177200400291 /* TimeEntryTests.swift */; };
-		5C200ADA298F576600400291 /* TimeEntryCollectionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD9298F576600400291 /* TimeEntryCollectionReducer.swift */; };
-		5C200ADC298F599700400291 /* TimeEntryCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200ADB298F599700400291 /* TimeEntryCollectionTests.swift */; };
+		5C200ADA298F576600400291 /* TimeEntryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AD9298F576600400291 /* TimeEntryList.swift */; };
+		5C200ADC298F599700400291 /* TimeEntryListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200ADB298F599700400291 /* TimeEntryListTests.swift */; };
 		5C200ADE298FF9CB00400291 /* TrackingEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200ADD298FF9CB00400291 /* TrackingEntity.swift */; };
 		5C200AE32990588700400291 /* TrackingPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE22990588700400291 /* TrackingPersistence.swift */; };
 		5C200AE52990592F00400291 /* FileSystemPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE42990592F00400291 /* FileSystemPersistence.swift */; };
 		5C200AE7299059AA00400291 /* FileSystemClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200AE6299059AA00400291 /* FileSystemClient.swift */; };
+		5C6969EC299A6DD900E3BBE3 /* AppReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6969EB299A6DD900E3BBE3 /* AppReducerTests.swift */; };
 		5CCD9F03299131AA001C925F /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCD9F02299131AA001C925F /* AppDependencies.swift */; };
 		5CD28791298EC632000F2173 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD28790298EC632000F2173 /* App.swift */; };
 		5CD28795298EC633000F2173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CD28794298EC633000F2173 /* Assets.xcassets */; };
@@ -27,6 +30,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5C02236429971234005A296C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5CD28785298EC631000F2173 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5CD2878C298EC632000F2173;
+			remoteInfo = TimeTracker;
+		};
 		5CD2879E298EC633000F2173 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5CD28785298EC631000F2173 /* Project object */;
@@ -37,28 +47,39 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5C0424DA29906B08001F88B8 /* PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceTests.swift; sourceTree = "<group>"; };
+		5C02236029971234005A296C /* TimeTrackerIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeTrackerIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C02236A299713DF005A296C /* PersistenceReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceReducerTests.swift; sourceTree = "<group>"; };
+		5C02236C29971587005A296C /* PersistenceReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceReducer.swift; sourceTree = "<group>"; };
+		5C0424DA29906B08001F88B8 /* PersistenceClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceClientTests.swift; sourceTree = "<group>"; };
 		5C0424DD2990C1FC001F88B8 /* TrackingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingListView.swift; sourceTree = "<group>"; };
 		5C0424DF2990C909001F88B8 /* TrackingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingCardView.swift; sourceTree = "<group>"; };
 		5C0424E32990E78B001F88B8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		5C200AD3298F175800400291 /* TimeEntryReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryReducer.swift; sourceTree = "<group>"; };
+		5C200AD3298F175800400291 /* TimeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntry.swift; sourceTree = "<group>"; };
 		5C200AD5298F177200400291 /* TimeEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryTests.swift; sourceTree = "<group>"; };
-		5C200AD9298F576600400291 /* TimeEntryCollectionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryCollectionReducer.swift; sourceTree = "<group>"; };
-		5C200ADB298F599700400291 /* TimeEntryCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryCollectionTests.swift; sourceTree = "<group>"; };
+		5C200AD9298F576600400291 /* TimeEntryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryList.swift; sourceTree = "<group>"; };
+		5C200ADB298F599700400291 /* TimeEntryListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryListTests.swift; sourceTree = "<group>"; };
 		5C200ADD298FF9CB00400291 /* TrackingEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingEntity.swift; sourceTree = "<group>"; };
 		5C200AE22990588700400291 /* TrackingPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingPersistence.swift; sourceTree = "<group>"; };
 		5C200AE42990592F00400291 /* FileSystemPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemPersistence.swift; sourceTree = "<group>"; };
 		5C200AE6299059AA00400291 /* FileSystemClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemClient.swift; sourceTree = "<group>"; };
+		5C6969EB299A6DD900E3BBE3 /* AppReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducerTests.swift; sourceTree = "<group>"; };
 		5CCD9F02299131AA001C925F /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		5CD2878D298EC632000F2173 /* TimeTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CD28790298EC632000F2173 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		5CD28794298EC633000F2173 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CD28797298EC633000F2173 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		5CD2879D298EC633000F2173 /* TimeTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CD2879D298EC633000F2173 /* TimeTrackerUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeTrackerUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CD287C3298ED48E000F2173 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5C02235D29971234005A296C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5CD2878A298EC632000F2173 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -77,6 +98,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C02236129971234005A296C /* TimeTrackerIntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				5C0424DA29906B08001F88B8 /* PersistenceClientTests.swift */,
+			);
+			path = TimeTrackerIntegrationTests;
+			sourceTree = "<group>";
+		};
 		5C0424DC2990C1E2001F88B8 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,8 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				5C200ADD298FF9CB00400291 /* TrackingEntity.swift */,
-				5C200AD3298F175800400291 /* TimeEntryReducer.swift */,
-				5C200AD9298F576600400291 /* TimeEntryCollectionReducer.swift */,
+				5C200AD3298F175800400291 /* TimeEntry.swift */,
+				5C200AD9298F576600400291 /* TimeEntryList.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -116,6 +145,7 @@
 		5C200AE12990586D00400291 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				5C02236C29971587005A296C /* PersistenceReducer.swift */,
 				5C200AE22990588700400291 /* TrackingPersistence.swift */,
 				5C200AE42990592F00400291 /* FileSystemPersistence.swift */,
 				5C200AE6299059AA00400291 /* FileSystemClient.swift */,
@@ -127,7 +157,8 @@
 			isa = PBXGroup;
 			children = (
 				5CD2878F298EC632000F2173 /* TimeTracker */,
-				5CD287A0298EC633000F2173 /* TimeTrackerTests */,
+				5CD287A0298EC633000F2173 /* TimeTrackerUnitTests */,
+				5C02236129971234005A296C /* TimeTrackerIntegrationTests */,
 				5CD2878E298EC632000F2173 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -136,7 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				5CD2878D298EC632000F2173 /* TimeTracker.app */,
-				5CD2879D298EC633000F2173 /* TimeTrackerTests.xctest */,
+				5CD2879D298EC633000F2173 /* TimeTrackerUnitTests.xctest */,
+				5C02236029971234005A296C /* TimeTrackerIntegrationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,19 +196,38 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		5CD287A0298EC633000F2173 /* TimeTrackerTests */ = {
+		5CD287A0298EC633000F2173 /* TimeTrackerUnitTests */ = {
 			isa = PBXGroup;
 			children = (
 				5C200AD5298F177200400291 /* TimeEntryTests.swift */,
-				5C200ADB298F599700400291 /* TimeEntryCollectionTests.swift */,
-				5C0424DA29906B08001F88B8 /* PersistenceTests.swift */,
+				5C200ADB298F599700400291 /* TimeEntryListTests.swift */,
+				5C02236A299713DF005A296C /* PersistenceReducerTests.swift */,
+				5C6969EB299A6DD900E3BBE3 /* AppReducerTests.swift */,
 			);
-			path = TimeTrackerTests;
+			path = TimeTrackerUnitTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5C02235F29971234005A296C /* TimeTrackerIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C02236629971234005A296C /* Build configuration list for PBXNativeTarget "TimeTrackerIntegrationTests" */;
+			buildPhases = (
+				5C02235C29971234005A296C /* Sources */,
+				5C02235D29971234005A296C /* Frameworks */,
+				5C02235E29971234005A296C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5C02236529971234005A296C /* PBXTargetDependency */,
+			);
+			name = TimeTrackerIntegrationTests;
+			productName = TimeTrackerSideEffectTests;
+			productReference = 5C02236029971234005A296C /* TimeTrackerIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		5CD2878C298EC632000F2173 /* TimeTracker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5CD287B1298EC633000F2173 /* Build configuration list for PBXNativeTarget "TimeTracker" */;
@@ -197,9 +248,9 @@
 			productReference = 5CD2878D298EC632000F2173 /* TimeTracker.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5CD2879C298EC633000F2173 /* TimeTrackerTests */ = {
+		5CD2879C298EC633000F2173 /* TimeTrackerUnitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5CD287B4298EC633000F2173 /* Build configuration list for PBXNativeTarget "TimeTrackerTests" */;
+			buildConfigurationList = 5CD287B4298EC633000F2173 /* Build configuration list for PBXNativeTarget "TimeTrackerUnitTests" */;
 			buildPhases = (
 				5CD28799298EC633000F2173 /* Sources */,
 				5CD2879A298EC633000F2173 /* Frameworks */,
@@ -210,9 +261,9 @@
 			dependencies = (
 				5CD2879F298EC633000F2173 /* PBXTargetDependency */,
 			);
-			name = TimeTrackerTests;
+			name = TimeTrackerUnitTests;
 			productName = TimeTrackerTests;
-			productReference = 5CD2879D298EC633000F2173 /* TimeTrackerTests.xctest */;
+			productReference = 5CD2879D298EC633000F2173 /* TimeTrackerUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -225,6 +276,10 @@
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
+					5C02235F29971234005A296C = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 5CD2878C298EC632000F2173;
+					};
 					5CD2878C298EC632000F2173 = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -251,12 +306,20 @@
 			projectRoot = "";
 			targets = (
 				5CD2878C298EC632000F2173 /* TimeTracker */,
-				5CD2879C298EC633000F2173 /* TimeTrackerTests */,
+				5CD2879C298EC633000F2173 /* TimeTrackerUnitTests */,
+				5C02235F29971234005A296C /* TimeTrackerIntegrationTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5C02235E29971234005A296C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5CD2878B298EC632000F2173 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -276,6 +339,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5C02235C29971234005A296C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C0223692997123E005A296C /* PersistenceClientTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5CD28789298EC632000F2173 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -283,9 +354,10 @@
 				5C200AE52990592F00400291 /* FileSystemPersistence.swift in Sources */,
 				5CCD9F03299131AA001C925F /* AppDependencies.swift in Sources */,
 				5C200AE7299059AA00400291 /* FileSystemClient.swift in Sources */,
-				5C200AD4298F175800400291 /* TimeEntryReducer.swift in Sources */,
+				5C200AD4298F175800400291 /* TimeEntry.swift in Sources */,
 				5C0424E42990E78B001F88B8 /* HomeView.swift in Sources */,
-				5C200ADA298F576600400291 /* TimeEntryCollectionReducer.swift in Sources */,
+				5C200ADA298F576600400291 /* TimeEntryList.swift in Sources */,
+				5C02236D29971587005A296C /* PersistenceReducer.swift in Sources */,
 				5C0424DE2990C1FC001F88B8 /* TrackingListView.swift in Sources */,
 				5CD28791298EC632000F2173 /* App.swift in Sources */,
 				5C200AE32990588700400291 /* TrackingPersistence.swift in Sources */,
@@ -298,15 +370,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C0424DB29906B08001F88B8 /* PersistenceTests.swift in Sources */,
 				5C200AD6298F177200400291 /* TimeEntryTests.swift in Sources */,
-				5C200ADC298F599700400291 /* TimeEntryCollectionTests.swift in Sources */,
+				5C200ADC298F599700400291 /* TimeEntryListTests.swift in Sources */,
+				5C6969EC299A6DD900E3BBE3 /* AppReducerTests.swift in Sources */,
+				5C02236B299713DF005A296C /* PersistenceReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5C02236529971234005A296C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5CD2878C298EC632000F2173 /* TimeTracker */;
+			targetProxy = 5C02236429971234005A296C /* PBXContainerItemProxy */;
+		};
 		5CD2879F298EC633000F2173 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5CD2878C298EC632000F2173 /* TimeTracker */;
@@ -315,6 +393,42 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5C02236729971234005A296C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2B59ACJ8D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.danilosouza.TimeTrackerSideEffectTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TimeTracker";
+			};
+			name = Debug;
+		};
+		5C02236829971234005A296C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V2B59ACJ8D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.danilosouza.TimeTrackerSideEffectTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TimeTracker";
+			};
+			name = Release;
+		};
 		5CD287AF298EC633000F2173 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -546,6 +660,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5C02236629971234005A296C /* Build configuration list for PBXNativeTarget "TimeTrackerIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C02236729971234005A296C /* Debug */,
+				5C02236829971234005A296C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5CD28788298EC631000F2173 /* Build configuration list for PBXProject "TimeTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -564,7 +687,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5CD287B4298EC633000F2173 /* Build configuration list for PBXNativeTarget "TimeTrackerTests" */ = {
+		5CD287B4298EC633000F2173 /* Build configuration list for PBXNativeTarget "TimeTrackerUnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5CD287B5298EC633000F2173 /* Debug */,

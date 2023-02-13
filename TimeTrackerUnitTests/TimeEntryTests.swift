@@ -16,7 +16,7 @@ final class TimeEntryTests: XCTestCase {
     let startDate = Date(timeIntervalSince1970: 1_111_111_000)
     let updateDate = Date(timeIntervalSince1970: 1_111_111_100)
 
-    let timeTrackingEntry: TimeEntryReducer.State = .init(
+    let timeTrackingEntry: TimeEntry.State = .init(
       entry: TrackingEntity(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
         description: .unnamed,
@@ -29,7 +29,7 @@ final class TimeEntryTests: XCTestCase {
 
     let store = TestStore(
       initialState: timeTrackingEntry,
-      reducer: TimeEntryReducer()
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(startDate)
@@ -64,8 +64,8 @@ final class TimeEntryTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryReducer.State(entry: timeTracking),
-      reducer: TimeEntryReducer()
+      initialState: TimeEntry.State(entry: timeTracking),
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(startDate)
@@ -98,8 +98,8 @@ final class TimeEntryTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryReducer.State(entry: pausedTimeTracking),
-      reducer: TimeEntryReducer()
+      initialState: TimeEntry.State(entry: pausedTimeTracking),
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(startDate)
@@ -124,8 +124,8 @@ final class TimeEntryTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryReducer.State(entry: runningTimeTracking),
-      reducer: TimeEntryReducer()
+      initialState: TimeEntry.State(entry: runningTimeTracking),
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(startDate)
@@ -151,8 +151,8 @@ final class TimeEntryTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryReducer.State(entry: runningTimeTracking),
-      reducer: TimeEntryReducer()
+      initialState: TimeEntry.State(entry: runningTimeTracking),
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(startDate)
@@ -167,7 +167,7 @@ final class TimeEntryTests: XCTestCase {
     let startDate = Date(timeIntervalSince1970: 1_111_111_000)
     let updateDate = Date(timeIntervalSince1970: 1_111_111_100)
 
-    let timeTrackingEntry: TimeEntryReducer.State = .init(
+    let timeTrackingEntry: TimeEntry.State = .init(
       entry: TrackingEntity(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
         description: .unnamed,
@@ -180,7 +180,7 @@ final class TimeEntryTests: XCTestCase {
 
     let store = TestStore(
       initialState: timeTrackingEntry,
-      reducer: TimeEntryReducer()
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(startDate)
@@ -205,7 +205,7 @@ final class TimeEntryTests: XCTestCase {
     let startDate = Date(timeIntervalSince1970: 1_111_111_000)
     let updateDate = Date(timeIntervalSince1970: 1_111_111_100)
 
-    let timeTrackingEntry: TimeEntryReducer.State = .init(
+    let timeTrackingEntry: TimeEntry.State = .init(
       entry: TrackingEntity(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
         description: .unnamed,
@@ -218,7 +218,7 @@ final class TimeEntryTests: XCTestCase {
 
     let store = TestStore(
       initialState: timeTrackingEntry,
-      reducer: TimeEntryReducer()
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(startDate)
@@ -254,8 +254,8 @@ final class TimeEntryTests: XCTestCase {
     )
 
     let store = TestStore(
-      initialState: TimeEntryReducer.State(entry: timeTracking),
-      reducer: TimeEntryReducer()
+      initialState: TimeEntry.State(entry: timeTracking),
+      reducer: TimeEntry()
     )
 
     // Should update the description.
@@ -287,7 +287,7 @@ final class TimeEntryTests: XCTestCase {
   func test_update_accumulated_time() async throws {
     let createdAt = Date(timeIntervalSince1970: 1_111_100_000)
 
-    let timeTrackingEntry: TimeEntryReducer.State = .init(
+    let timeTrackingEntry: TimeEntry.State = .init(
       entry: TrackingEntity(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
         description: .unnamed,
@@ -302,7 +302,7 @@ final class TimeEntryTests: XCTestCase {
 
     let store = TestStore(
       initialState: timeTrackingEntry,
-      reducer: TimeEntryReducer()
+      reducer: TimeEntry()
     )
 
     store.dependencies.date = .constant(createdAt.addingTimeInterval(10))

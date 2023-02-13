@@ -10,10 +10,10 @@ import SwiftUI
 
 extension TrackingListView {
   struct ViewState: Equatable {
-    let state: TimeEntryCollectionReducer.State
+    let state: TimeEntryList.State
     let clearAllLabel: String
 
-    init(state: TimeEntryCollectionReducer.State) {
+    init(state: TimeEntryList.State) {
       self.state = state
       clearAllLabel = "Clear all (\(state.entries.count))"
     }
@@ -21,12 +21,12 @@ extension TrackingListView {
 }
 
 struct TrackingListView: View {
-  typealias Action = TimeEntryCollectionReducer.Action
+  typealias Action = TimeEntryList.Action
 
-  let store: StoreOf<TimeEntryCollectionReducer>
+  let store: StoreOf<TimeEntryList>
   @ObservedObject var viewStore: ViewStore<ViewState, Action>
 
-  init(store: StoreOf<TimeEntryCollectionReducer>) {
+  init(store: StoreOf<TimeEntryList>) {
     self.store = store
     viewStore = ViewStore(store, observe: ViewState.init)
   }
@@ -45,7 +45,7 @@ struct TrackingListView: View {
         ForEachStore(
           store.scope(
             state: { $0.entries },
-            action: TimeEntryCollectionReducer.Action.timeTracking
+            action: TimeEntryList.Action.timeTracking
           )
         ) { TrackingCardView(store: $0).padding([.top, .bottom], 8) }
       }
@@ -100,7 +100,7 @@ struct TrackingList_Previews: PreviewProvider {
             )
           ),
         ]),
-        reducer: TimeEntryCollectionReducer()
+        reducer: TimeEntryList()
       )
     )
   }
